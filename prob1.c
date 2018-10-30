@@ -9,9 +9,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define N 1000
+#define N 25
 
-int global_index = 0;
+int order[2*N];
+int global_index;
 sem_t mutex;
 sem_t empty;
 sem_t full;
@@ -34,7 +35,7 @@ int main(){
 	for(; i<N; i++){
 		/*produce an item in next_produced */
 		int next_produced = rand() % 10;
-		printf("%d) Parent Iteration #%d. data = %d\n", global_index, i, next_produced);
+		printf("Parent Iteration #%d. data = %d\n", i, next_produced);
 		fflush(stdout);
 
 		sem_wait(&empty);
@@ -42,6 +43,7 @@ int main(){
 
 		/*add next_produced to buffer*/
 		buffer[buffer_index] = next_produced;
+		order[global_index] = 1;
 		global_index++;
 
 		sem_post(&mutex); 
@@ -55,6 +57,12 @@ int main(){
 	}
 	
 	sleep(2);
+	i = 0;
+	for(; i<N*2; i++){
+		printf("%d\n", order[i]);
+		fflush(stdout);
+	}
+	
 	return 0;
 }
 
@@ -70,12 +78,13 @@ void* child(){
 		int next_consumed = buffer[buffer_index];
 		buffer[buffer_index] = 0;
 		
+		order[global_index] = 2;
 		global_index++;
 
 		sem_post(&mutex);
 		sem_post(&empty);
 		
-		printf("%d) Child Iteration #%d. data = %d\n", global_index, i, next_consumed);
+		printf("Child Iteration #%d. data = %d\n", i, next_consumed);
 		fflush(stdout);
 		
 		buffer_index++;
