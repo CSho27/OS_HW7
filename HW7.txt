@@ -4,3 +4,92 @@ OS HW 7
 Report
 
 1. 
+a) 
+output: (for N=25)
+	Parent Iteration #0, data = 3
+	Parent Iteration #1, data = 6
+	Parent Iteration #2, data = 7
+	Parent Iteration #3, data = 5
+	Parent Iteration #4, data = 3
+	Parent Iteration #5, data = 5
+	Parent Iteration #6, data = 6
+	Parent Iteration #7, data = 2
+	Parent Iteration #8, data = 9
+	Parent Iteration #9, data = 1
+	Parent Iteration #10, data = 2
+	Parent Iteration #11, data = 7
+	Parent Iteration #12, data = 0
+	Parent Iteration #13, data = 9
+	Parent Iteration #14, data = 3
+	Parent Iteration #15, data = 6
+	Parent Iteration #16, data = 0
+	Parent Iteration #17, data = 6
+	Parent Iteration #18, data = 2
+	Parent Iteration #19, data = 6
+	Parent Iteration #20, data = 1
+	Parent Iteration #21, data = 8
+	Parent Iteration #22, data = 7
+	Parent Iteration #23, data = 9
+	Parent Iteration #24, data = 2
+	Child Iteration #0. data = 2
+	Child Iteration #1. data = 9
+	Child Iteration #2. data = 3
+	Child Iteration #3. data = 6
+	Child Iteration #4. data = 0
+	Child Iteration #5. data = 6
+	Child Iteration #6. data = 2
+	Child Iteration #7. data = 6
+	Child Iteration #8. data = 1
+	Child Iteration #9. data = 8
+	Child Iteration #10. data = 7
+	Child Iteration #11. data = 9
+	Child Iteration #12. data = 0
+	Child Iteration #13. data = 0
+	Child Iteration #14. data = 0
+	Child Iteration #15. data = 0
+	Child Iteration #16. data = 0
+	Child Iteration #17. data = 0
+	Child Iteration #18. data = 0
+	Child Iteration #19. data = 0
+	Child Iteration #20. data = 0
+	Child Iteration #21. data = 0
+	Child Iteration #22. data = 0
+	Child Iteration #23. data = 0
+	Child Iteration #24. data = 0
+	
+b) Order
+	For whatever reason, this always runs such that all the parent iterations occur before the child iterations. Even if I increase N so that there is more overlap in setting values, it still does this.
+	And yes, this is the same every time I run the program.
+	
+c) Explanation
+	Based on the amount of time it takes to calculate, print and write 25 values, the one second sleep ensures that the parent will be done printing by the time the child starts reading.
+	No competition takes place with an N or 25. With larger N there might be some overlap, but it's really hard to tell because the print statement get really hard to sift through
+	
+	Ideally, since they just cant write and read values at the same time, they should be able to be going back and forth writing and reading, but it was just very hard to make them do that
+	in this example. Even at an N of 1000 they do not overlap.
+	
+d) I added a global index that basically just increments during the semaphored part of each thread's code and prints it out whenever the rest of the stuf prints out. This way we can tell the exact order
+	of the steps, because the number will only increment if it has gone through the semaphored code of one of the threads
+	
+	It agrees with my previous observations, becuase it still is not actually running concurrently even as I scroll through 1000 lines of output. I still stand by the idea that they would go back and forth
+	if they were actually timed such that they had some overlap, but I wanted to make sure I followed the instructions exactly.
+	
+	
+	
+2)
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+

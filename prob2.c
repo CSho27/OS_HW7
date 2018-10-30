@@ -1,6 +1,6 @@
 //Christopher Shorter
 //OS_HW7
-//Problem 1
+//Problem 2
 
 #include <stdio.h>
 #include <sys/types.h>
