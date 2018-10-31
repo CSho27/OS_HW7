@@ -24,7 +24,7 @@ void* parent(void* id);
 
 int main(){
 	sem_init(&mutex, 0, 1);
-	sem_init(&empty, 0, N);
+	sem_init(&empty, 0, N/2);
 	sem_init(&full, 0, 0);
 
 	pid_t pid;

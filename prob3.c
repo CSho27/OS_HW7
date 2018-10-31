@@ -57,11 +57,6 @@ int main(){
 	}
 	
 	sleep(2);
-	i = 0;
-	for(; i<N*2; i++){
-		printf("%d\n", order[i]);
-		fflush(stdout);
-	}
 	
 	return 0;
 }
@@ -72,17 +67,17 @@ void* child(){
 	int i = 0;
 	int buffer_index = 0;
 	for(; i<N; i++){
-		sem_wait(&full);
 		sem_wait(&mutex);
-
+		sem_wait(&full);
+		
 		int next_consumed = buffer[buffer_index];
 		buffer[buffer_index] = 0;
 		
 		order[global_index] = 2;
 		global_index++;
 
-		sem_post(&mutex);
 		sem_post(&empty);
+		sem_post(&mutex);
 		
 		printf("Child Iteration #%d. data = %d\n", i, next_consumed);
 		fflush(stdout);
@@ -91,6 +86,6 @@ void* child(){
 		if(buffer_index == N/2)
 			buffer_index = 0;
 	}
-	
 	return NULL;
+	
 }

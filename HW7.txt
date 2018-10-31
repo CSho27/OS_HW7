@@ -6,124 +6,118 @@ Report
 1. 
 a) 
 output: (for N=25)
-	Parent Iteration #0. data = 3
-	Parent Iteration #1. data = 6
-	Parent Iteration #2. data = 7
-	Parent Iteration #3. data = 5
-	Parent Iteration #4. data = 3
-	Parent Iteration #5. data = 5
-	Parent Iteration #6. data = 6
-	Parent Iteration #7. data = 2
-	Parent Iteration #8. data = 9
-	Parent Iteration #9. data = 1
-	Parent Iteration #10. data = 2
-	Parent Iteration #11. data = 7
-	Parent Iteration #12. data = 0
-	Parent Iteration #13. data = 9
-	Parent Iteration #14. data = 3
-	Parent Iteration #15. data = 6
-	Parent Iteration #16. data = 0
-	Parent Iteration #17. data = 6
-	Parent Iteration #18. data = 2
-	Parent Iteration #19. data = 6
-	Parent Iteration #20. data = 1
-	Parent Iteration #21. data = 8
-	Parent Iteration #22. data = 7
-	Parent Iteration #23. data = 9
-	Parent Iteration #24. data = 2
-	Child Iteration #0. data = 2
-	Child Iteration #1. data = 9
-	Child Iteration #2. data = 3
-	Child Iteration #3. data = 6
-	Child Iteration #4. data = 0
-	Child Iteration #5. data = 6
-	Child Iteration #6. data = 2
-	Child Iteration #7. data = 6
-	Child Iteration #8. data = 1
-	Child Iteration #9. data = 8
-	Child Iteration #10. data = 7
-	Child Iteration #11. data = 9
-	Child Iteration #12. data = 0
-	Child Iteration #13. data = 0
-	Child Iteration #14. data = 0
-	Child Iteration #15. data = 0
-	Child Iteration #16. data = 0
-	Child Iteration #17. data = 0
-	Child Iteration #18. data = 0
-	Child Iteration #19. data = 0
-	Child Iteration #20. data = 0
-	Child Iteration #21. data = 0
-	Child Iteration #22. data = 0
-	Child Iteration #23. data = 0
-	Child Iteration #24. data = 0
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	1
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
-	2
+Parent Iteration #0. data = 3
+Parent Iteration #1. data = 6
+Parent Iteration #2. data = 7
+Parent Iteration #3. data = 5
+Parent Iteration #4. data = 3
+Parent Iteration #5. data = 5
+Parent Iteration #6. data = 6
+Parent Iteration #7. data = 2
+Parent Iteration #8. data = 9
+Parent Iteration #9. data = 1
+Parent Iteration #10. data = 2
+Parent Iteration #11. data = 7
+Parent Iteration #12. data = 0
+Parent Iteration #13. data = 9
+Child Iteration #0. data = 3
+Parent Iteration #14. data = 3
+Child Iteration #1. data = 6
+Parent Iteration #15. data = 6
+Child Iteration #2. data = 7
+Parent Iteration #16. data = 0
+Child Iteration #3. data = 5
+Parent Iteration #17. data = 6
+Child Iteration #4. data = 3
+Parent Iteration #18. data = 2
+Child Iteration #5. data = 5
+Parent Iteration #19. data = 6
+Child Iteration #6. data = 6
+Parent Iteration #20. data = 1
+Child Iteration #7. data = 2
+Parent Iteration #21. data = 8
+Child Iteration #8. data = 9
+Parent Iteration #22. data = 7
+Child Iteration #9. data = 1
+Parent Iteration #23. data = 9
+Child Iteration #10. data = 2
+Parent Iteration #24. data = 2
+Child Iteration #11. data = 7
+Child Iteration #12. data = 0
+Child Iteration #13. data = 9
+Child Iteration #14. data = 3
+Child Iteration #15. data = 6
+Child Iteration #16. data = 0
+Child Iteration #17. data = 6
+Child Iteration #18. data = 2
+Child Iteration #19. data = 6
+Child Iteration #20. data = 1
+Child Iteration #21. data = 8
+Child Iteration #22. data = 7
+Child Iteration #23. data = 9
+Child Iteration #24. data = 2
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+2
+1
+2
+1
+2
+1
+2
+1
+2
+1
+2
+1
+2
+1
+2
+1
+2
+1
+2
+1
+2
+1
+2
+1
+2
+1
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+
 	
 b) Order
-	For whatever reason, this always runs such that all the parent iterations occur before the child iterations. Even if I increase N so that there is more overlap in setting values, it still does this.
-	And yes, this is the same every time I run the program.
+	It does all parents to fill up buffer, waits for consumer to start, then alternates until parent finishes, then finishes all the consuming
 	
 c) Explanation
-	Based on the amount of time it takes to calculate, print and write 25 values, the one second sleep ensures that the parent will be done printing by the time the child starts reading.
-	No competition takes place with an N or 25. With larger N there might be some overlap, but it's really hard to tell because the print statement get really hard to sift through
-	
-	Ideally, since they just cant write and read values at the same time, they should be able to be going back and forth writing and reading, but it was just very hard to make them do that
-	in this example. Even at an N of 1000 they do not overlap.
+	Basically, once the producer fills the buffer up, it has to wait for the consumer to start consuming. It then can alternate for a little bit until the producer stops trying to fill values.
 	
 d) I added an array and a global index that basically just increments during the semaphored part of each thread's code and throws a thread id in the array. 1 stands for the producer and 2 for the consumer. 
 	Then it prints all the values of the array at the end. We can see by the positions of the ids if they intertwine at all while setting and reading values.
 	
-	It agrees with my previous observations, becuase it still is not actually running concurrently even as I scroll through 1000 lines of output. I still stand by the idea that they would go back and forth
-	if they were actually timed such that they had some overlap, but I wanted to make sure I followed the instructions exactly.
-	
+	It agrees with my previous observations.
 	
 	
 2)
@@ -141,18 +135,6 @@ Producer #1, iteration #9. data = 1
 Producer #1, iteration #10. data = 2
 Producer #1, iteration #11. data = 7
 Producer #1, iteration #12. data = 0
-Producer #1, iteration #13. data = 9
-Producer #1, iteration #14. data = 3
-Producer #1, iteration #15. data = 6
-Producer #1, iteration #16. data = 0
-Producer #1, iteration #17. data = 6
-Producer #1, iteration #18. data = 2
-Producer #1, iteration #19. data = 6
-Producer #1, iteration #20. data = 1
-Producer #1, iteration #21. data = 8
-Producer #1, iteration #22. data = 7
-Producer #1, iteration #23. data = 9
-Producer #1, iteration #24. data = 2
 Producer #2, iteration #0. data = 3
 Producer #2, iteration #1. data = 6
 Producer #2, iteration #2. data = 7
@@ -166,6 +148,55 @@ Producer #2, iteration #9. data = 1
 Producer #2, iteration #10. data = 2
 Producer #2, iteration #11. data = 7
 Producer #2, iteration #12. data = 0
+Consumer #1, iteration #0. data = 3
+Consumer #1, iteration #1. data = 6
+Consumer #1, iteration #2. data = 7
+Consumer #1, iteration #3. data = 5
+Consumer #1, iteration #4. data = 3
+Consumer #1, iteration #5. data = 5
+Consumer #1, iteration #6. data = 6
+Consumer #1, iteration #7. data = 2
+Consumer #1, iteration #8. data = 9
+Consumer #1, iteration #9. data = 1
+Consumer #1, iteration #10. data = 2
+Consumer #1, iteration #11. data = 7
+Producer #1, iteration #13. data = 9
+Producer #1, iteration #14. data = 3
+Producer #1, iteration #15. data = 6
+Producer #1, iteration #16. data = 0
+Producer #1, iteration #17. data = 6
+Producer #1, iteration #18. data = 2
+Producer #1, iteration #19. data = 6
+Producer #1, iteration #20. data = 1
+Producer #1, iteration #21. data = 8
+Producer #1, iteration #22. data = 7
+Producer #1, iteration #23. data = 9
+Producer #1, iteration #24. data = 2
+Consumer #1, iteration #12. data = 0
+Consumer #1, iteration #13. data = 9
+Consumer #1, iteration #14. data = 3
+Consumer #1, iteration #15. data = 6
+Consumer #1, iteration #16. data = 0
+Consumer #1, iteration #17. data = 6
+Consumer #1, iteration #18. data = 2
+Consumer #1, iteration #19. data = 6
+Consumer #1, iteration #20. data = 1
+Consumer #1, iteration #21. data = 8
+Consumer #1, iteration #22. data = 7
+Consumer #1, iteration #23. data = 9
+Consumer #1, iteration #24. data = 2
+Consumer #2, iteration #0. data = 3
+Consumer #2, iteration #1. data = 6
+Consumer #2, iteration #2. data = 7
+Consumer #2, iteration #3. data = 5
+Consumer #2, iteration #4. data = 3
+Consumer #2, iteration #5. data = 5
+Consumer #2, iteration #6. data = 6
+Consumer #2, iteration #7. data = 2
+Consumer #2, iteration #8. data = 9
+Consumer #2, iteration #9. data = 1
+Consumer #2, iteration #10. data = 2
+Consumer #2, iteration #11. data = 7
 Producer #2, iteration #13. data = 9
 Producer #2, iteration #14. data = 3
 Producer #2, iteration #15. data = 6
@@ -178,165 +209,157 @@ Producer #2, iteration #21. data = 8
 Producer #2, iteration #22. data = 7
 Producer #2, iteration #23. data = 9
 Producer #2, iteration #24. data = 2
-Consumer #1, iteration #0. data = 2
-Consumer #1, iteration #1. data = 9
-Consumer #1, iteration #2. data = 3
-Consumer #1, iteration #3. data = 6
-Consumer #1, iteration #4. data = 0
-Consumer #1, iteration #5. data = 6
-Consumer #1, iteration #6. data = 2
-Consumer #1, iteration #7. data = 6
-Consumer #1, iteration #8. data = 1
-Consumer #1, iteration #9. data = 8
-Consumer #1, iteration #10. data = 7
-Consumer #1, iteration #11. data = 9
-Consumer #1, iteration #12. data = 0
-Consumer #1, iteration #13. data = 0
-Consumer #1, iteration #14. data = 0
-Consumer #1, iteration #15. data = 0
-Consumer #1, iteration #16. data = 0
-Consumer #1, iteration #17. data = 0
-Consumer #1, iteration #18. data = 0
-Consumer #1, iteration #19. data = 0
-Consumer #1, iteration #20. data = 0
-Consumer #1, iteration #21. data = 0
-Consumer #1, iteration #22. data = 0
-Consumer #1, iteration #23. data = 0
-Consumer #1, iteration #24. data = 0
-Consumer #2, iteration #0. data = 2
-Consumer #2, iteration #1. data = 9
-Consumer #2, iteration #2. data = 3
-Consumer #2, iteration #3. data = 6
-Consumer #2, iteration #4. data = 0
-Consumer #2, iteration #5. data = 6
-Consumer #2, iteration #6. data = 2
-Consumer #2, iteration #7. data = 6
-Consumer #2, iteration #8. data = 1
-Consumer #2, iteration #9. data = 8
-Consumer #2, iteration #10. data = 7
-Consumer #2, iteration #11. data = 9
 Consumer #2, iteration #12. data = 0
-Consumer #2, iteration #13. data = 0
-Consumer #2, iteration #14. data = 0
-Consumer #2, iteration #15. data = 0
+Consumer #2, iteration #13. data = 9
+Consumer #2, iteration #14. data = 3
+Consumer #2, iteration #15. data = 6
 Consumer #2, iteration #16. data = 0
-Consumer #2, iteration #17. data = 0
-Consumer #2, iteration #18. data = 0
-Consumer #2, iteration #19. data = 0
-Consumer #2, iteration #20. data = 0
-Consumer #2, iteration #21. data = 0
-Consumer #2, iteration #22. data = 0
-Consumer #2, iteration #23. data = 0
-Consumer #2, iteration #24. data = 0
-2
+Consumer #2, iteration #17. data = 6
+Consumer #2, iteration #18. data = 2
+Consumer #2, iteration #19. data = 6
+Consumer #2, iteration #20. data = 1
+Consumer #2, iteration #21. data = 8
+Consumer #2, iteration #22. data = 7
+Consumer #2, iteration #23. data = 9
+Consumer #2, iteration #24. data = 2
 1
-2
-2
 1
-2
 1
-2
 1
-2
 1
-2
 1
-2
 1
-2
 1
-2
 1
-2
 1
-2
 1
-2
 1
-2
-1
-2
-1
-2
-1
-2
-1
-2
-1
-2
-1
-2
-1
-2
-1
-2
-1
-2
-1
-2
-1
-2
-1
-4
-1
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
 3
 3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+1
+3
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+2
+4
 
 b) CPUs used was 2
 
 c)
-unlike last time, the producer and consumer seem to be actually overlapping, but the two producers and two consumers seem to alternate somewhat randomly. It is usually just taking turns, but there are rounds
-that a producer or consumer will do two steps in a row. This is not the same every time the program is run. It just depends on what else is going on. THe output included shows the two producers finishing first,
-but it turns out that sometimes the consumers run concurrently with them.
+The producers start and go for a little bit, then the consumers start alternating with the producers in strange chunks. It is usually just taking turns, but there are rounds
+that a producer or consumer will do two steps in a row. This is not the same every time the program is run. It must just depend on what else is going on.
 	
-	
+3) 
+
+a) Well, it froze here and did not finish:
+Parent Iteration #0. data = 3
+Parent Iteration #1. data = 6
+Parent Iteration #2. data = 7
+Parent Iteration #3. data = 5
+Parent Iteration #4. data = 3
+Parent Iteration #5. data = 5
+Parent Iteration #6. data = 6
+Parent Iteration #7. data = 2
+Parent Iteration #8. data = 9
+Parent Iteration #9. data = 1
+Parent Iteration #10. data = 2
+Parent Iteration #11. data = 7
+Parent Iteration #12. data = 0
+Child Iteration #0. data = 3
+Child Iteration #1. data = 6
+Child Iteration #2. data = 7
+Child Iteration #3. data = 5
+Child Iteration #4. data = 3
+Child Iteration #5. data = 5
+Child Iteration #6. data = 6
+Child Iteration #7. data = 2
+Child Iteration #8. data = 9
+Child Iteration #9. data = 1
+Child Iteration #10. data = 2
+Child Iteration #11. data = 7
+
+b) This does not work, because this defeats the purpose of having the other two semaphores, because it will get inside of the mutual exlusion and if none of
+the slots are full, the producer will not be able to get in to write them because the mutual exclusion will be active.
 	
 	
 	
